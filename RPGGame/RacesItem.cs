@@ -57,26 +57,22 @@ namespace RPGGame
     }
     public class NotificationRaces
     {
+        #region Notify_Death
         /// <summary>
         /// Уведомление о смерти персонажа
         /// </summary>
         /// <param name="person_Name">Имя</param>
         public delegate void DeathHandler(string person_Name);
-        /// <summary>
-        /// Уведомление о воскрешении персонажа
-        /// </summary>
-        /// <param name="person_Name">Имя</param>
-        /// <param name="maxResurrect">Количество оставшихся воскрешений</param>
-        public delegate void ResurrectHandler(string person_Name, int maxResurrect);
-        /// <summary>
-        /// Уведомление получении повреждении
-        /// </summary>
-        /// <param name="defensive_Name">Имя</param>
-        /// <param name="siteOfInjury">Место нанесённого урона</param>
-        /// <param name="weapon_Name">Название оружия</param>
-        /// <param name="damage">Урон</param>
-        /// <param name="currentHealth">Текущее здоровье</param>
-        public delegate void GetDamageHandler(string defensive_Name, PartBody[] siteOfInjury, string weapon_Name, float damage, float currentHealth);
+        public event DeathHandler Notify_Death;
+        private protected void Notify_Death_Invoke(string name)
+        {
+            Notify_Death?.Invoke(name);
+        }
+        #endregion Notify_Death
+
+
+
+        #region Notify_SetDamage
         /// <summary>
         /// Уведомление нанесении повреждении
         /// </summary>
@@ -86,12 +82,68 @@ namespace RPGGame
         /// <param name="siteOfInjury">Место нанесённого урона</param>
         public delegate void SetDamageHandler(string attacking_Name, string defensive_Name, string weapon_Name, PartBody[] siteOfInjury);
 
+        public event SetDamageHandler Notify_SetDamage;
+        private protected void Notify_SetDamage_Invoke(string attacking_Name, string defensive_Name, string weapon_Name, PartBody[] siteOfInjury)
+        {
+            Notify_SetDamage?.Invoke(attacking_Name, defensive_Name, weapon_Name, siteOfInjury);
+        }
+        #endregion Notify_SetDamage
+
+
+
+        #region Notify_GetDamage
+        /// <summary>
+        /// Уведомление получении повреждении
+        /// </summary>
+        /// <param name="defensive_Name">Имя</param>
+        /// <param name="siteOfInjury">Место нанесённого урона</param>
+        /// <param name="weapon_Name">Название оружия</param>
+        /// <param name="damage">Урон</param>
+        /// <param name="currentHealth">Текущее здоровье</param>
+        public delegate void GetDamageHandler(string defensive_Name, PartBody[] siteOfInjury, string weapon_Name, float damage, float currentHealth);
+
+        public event GetDamageHandler Notify_GetDamage;
+        private protected void Notify_GetDamage_Invoke(string defensive_Name, PartBody[] siteOfInjury, string weapon_Name, float damage, float currentHealth)
+        {
+            Notify_GetDamage?.Invoke(defensive_Name, siteOfInjury, weapon_Name, damage, currentHealth);
+        }
+        #endregion Notify_GetDamage
+
+
+
+        #region Notify_Resurrect
+        /// <summary>
+        /// Уведомление о воскрешении персонажа
+        /// </summary>
+        /// <param name="person_Name">Имя</param>
+        /// <param name="maxResurrect">Количество оставшихся воскрешений</param>
+        public delegate void ResurrectHandler(string person_Name, int maxResurrect);
+        public event ResurrectHandler Notify_Resurrect;
+        private protected void Notify_Resurrect_Invoke(string person_Name, int maxResurrect)
+        {
+            Notify_Resurrect?.Invoke(person_Name, maxResurrect);
+        }
+        #endregion Notify_Resurrect
+
+
+
+        #region Notify_UseSubject
         /// <summary>
         /// Использование предмета
         /// </summary>
         /// <param name="person_Name">Имя персонажа</param>
         /// <param name="weapon_Name">Название предмета</param>
         public delegate void UseSubjectHandler(string person_Name, string weapon_Name, bool availability);
+        public event UseSubjectHandler Notify_UseSubject;
+        private protected void Notify_UseSubject_Invoke(string person_Name, string weapon_Name, bool availability)
+        {
+            Notify_UseSubject?.Invoke(person_Name, weapon_Name, availability);
+        }
+        #endregion Notify_UseSubject
+
+
+
+        #region Notify_UseArmor
         /// <summary>
         /// Использование брони
         /// </summary>
@@ -99,19 +151,44 @@ namespace RPGGame
         /// <param name="armor_Name">Название брони</param>
         /// <param name="partBody">Место ношения брони</param>
         public delegate void UseArmorHandler(string person_Name, string armor_Name, PartBody partBody);
+        public event UseArmorHandler Notify_UseArmor;
+        private protected void Notify_UseArmor_Invoke(string person_Name, string armor_Name, PartBody partBody)
+        {
+            Notify_UseArmor?.Invoke(person_Name, armor_Name, partBody);
+        }
+        #endregion Notify_UseArmor
+
+
+
+        #region Notify_UseWeapon
         /// <summary>
         /// Использование оружия
         /// </summary>
         /// <param name="person_Name">Имя персонажа</param>
         /// <param name="weapon_Name">Название оружия</param>
         public delegate void UseWeaponHandler(string person_Name, string weapon_Name);
+        public event UseWeaponHandler Notify_UseWeapon;
+        private protected void Notify_UseWeapon_Invoke(string person_Name, string weapon_Name)
+        {
+            Notify_UseWeapon?.Invoke(person_Name, weapon_Name);
+        }
+        #endregion Notify_UseWeapon
 
+
+        #region Notify_NotificationRaces
         /// <summary>
         /// Недостаточно пространства
         /// </summary>
         /// <param name="person_Name">Имя персонажа</param>
         /// <param name="ItemName">Название предмета</param>
         public delegate void GettingAnItem(string person_Name, string ItemName, bool availability);
+        public event GettingAnItem Notify_NotificationRaces;
+        private protected void Notify_NotificationRaces_Invoke(string person_Name, string ItemName, bool availability)
+        {
+            Notify_NotificationRaces?.Invoke(person_Name, ItemName, availability);
+        }
+        #endregion Notify_NotificationRaces
+
     }
 
 
@@ -233,7 +310,7 @@ namespace RPGGame
     /// <summary>
     /// Характеристики
     /// </summary> 
-    public class Characteristics : IParam
+    public class Characteristics : NotificationRaces, IParam
     {
         internal string Name { get; private protected set; }
         internal int MaxResurrect { get; private protected set; }
@@ -314,25 +391,7 @@ namespace RPGGame
             speed.CurrentValue > Math.Abs(requirement.Speed) &&
             force.CurrentValue > Math.Abs(requirement.Force);*/
         }
-        /*
-         
 
-        oiu[0987uio,8765t4ry5ghuyhgtrfdewftygrfdwesftgdwesqfegrdsxj ASWDE RFGTHYUJKIOP09OI8U7Y65T4R3EW
-
-
-        .
-        36528.10
-        36985.201
-        3698.5125.
-
-        \]'4\][']['p;
-        []po;l;p'[oukiytrewqasdfghjkiolp;kjhgdfsazxcfvgbhnjkml;j,mnbvc nm
-
-
-
-         
-         
-         */
         private protected void Apply_Effects(Effects requirement)
         {
             stealth.CurrentValue += requirement.Stealth;
@@ -345,8 +404,77 @@ namespace RPGGame
             speed.CurrentValue -= requirement.Speed;
             force.CurrentValue -= requirement.Force;
         }
+
+
+
+
+
+        #region Equipment Экипировка
+        public Weapon ThisWeapon { get; private protected set; }
+        internal ArmorSet ThisArmor
+        {
+            get
+            {
+                return thisArmor;
+            }
+        }
+        private protected ArmorSet thisArmor;
+        #endregion Equipment Экипировка
+
+
+
+        private protected void Heals(float heals)
+        {
+            if (!Alive) return;
+            health.Heals(heals);
+        }
+        private protected void TakeDamage(Weapon weapon, PartBody[] siteOfInjury)
+        {
+            if (!Alive) return;
+            var damage = health.TakeDamage(weapon, thisArmor, siteOfInjury);
+            Notify_GetDamage_Invoke(Name, siteOfInjury, weapon.Name, damage, Health.CurrentValue);
+            if (Health.CurrentValue == 0)
+            {
+                Notify_Death_Invoke(Name);
+                Die();
+            }
+        }
     }
-    public class RacesItem : Characteristics, IRacesItem, INotificationRaces
+    public class UsingItems : Characteristics
+    {
+        private protected void UseHealing(Healing healing)
+        {
+            Heals(healing.HealingAmount);
+        }
+        private protected void UseWeapon(Weapon weapon)
+        {
+            ThisWeapon = weapon;
+            Notify_UseWeapon_Invoke(Name, weapon.Name);
+        }
+        private protected void UseArmor(Armor armor)
+        {
+            switch (armor.PartOfBody)
+            {
+                case PartBody.Head:
+                    thisArmor.ThisHelmet = (Helmet)armor;
+                    break;
+                case PartBody.Breast:
+                    thisArmor.ThisBreastplate = (Breastplate)armor;
+                    break;
+                case PartBody.Legs:
+                    thisArmor.ThisLeggings = (Leggings)armor;
+                    break;
+                case PartBody.Feet:
+                    thisArmor.ThisBoots = (Boots)armor;
+                    break;
+                case PartBody.Hands:
+                    thisArmor.ThisBracers = (Bracers)armor;
+                    break;
+            }
+            Notify_UseArmor_Invoke(Name, armor.Name, armor.PartOfBody);
+        }
+    }
+    public class RacesItem : UsingItems, IRacesItem, INotificationRaces
     {
         /// <summary>
         /// Начальные характеристики
@@ -373,36 +501,7 @@ namespace RPGGame
             ResurrectBase();
         }
 
-        #region Notification
-        public event DeathHandler Notify_Death;
-        public event SetDamageHandler Notify_SetDamage;
-        public event GetDamageHandler Notify_GetDamage;
 
-
-
-
-
-
-        public event UseSubjectHandler Notify_UseSubject;
-
-        public event UseArmorHandler Notify_UseArmor;
-        public event UseWeaponHandler Notify_UseWeapon;
-        public event ResurrectHandler Notify_Resurrect;
-        public event GettingAnItem Notify_NotificationRaces;
-        #endregion Notification
-
-
-        #region Equipment Экипировка
-        public Weapon ThisWeapon { get; private set; }
-        internal ArmorSet ThisArmor
-        {
-            get
-            {
-                return thisArmor;
-            }
-        }
-        private ArmorSet thisArmor;
-        #endregion Equipment Экипировка
 
         #region Actions
         public void Move()
@@ -413,21 +512,18 @@ namespace RPGGame
         public void Hit(RacesItem person, PartBody siteOfInjury)
         {
             if (!Alive) return;
-            Notify_SetDamage?.Invoke(Name, person.Name, ThisWeapon.Name, new PartBody[] { siteOfInjury });
+            Notify_SetDamage_Invoke(Name, person.Name, ThisWeapon.Name, new PartBody[] { siteOfInjury });
             person.TakeDamage(ThisWeapon, new PartBody[] { siteOfInjury });
         }
         public void Hit(RacesItem person, PartBody[] siteOfInjury)
         {
             if (!Alive) return;
-            Notify_SetDamage?.Invoke(Name, person.Name, ThisWeapon.Name, siteOfInjury);
+            Notify_SetDamage_Invoke(Name, person.Name, ThisWeapon.Name, siteOfInjury);
             person.TakeDamage(ThisWeapon, siteOfInjury);
         }
         public void GetItem(Item item)
         {
-            if (Inventory.Add(item))
-                Notify_NotificationRaces?.Invoke(Name, item.Name, true);
-            else
-                Notify_NotificationRaces?.Invoke(Name, item.Name, false);
+            Notify_NotificationRaces_Invoke(Name, item.Name, Inventory.Add(item));
         }
         public void UseItem(int indexInInventory)
         {
@@ -436,7 +532,7 @@ namespace RPGGame
             Item item = Inventory.Items[indexInInventory];
             if (!CheckAvailability_Effects(item.Effects_))
             {
-                Notify_UseSubject?.Invoke(Name, item.Name, false);
+                Notify_UseSubject_Invoke(Name, item.Name, false);
                 return;
             }
 
@@ -444,70 +540,17 @@ namespace RPGGame
             if (item is Weapon) UseWeapon((Weapon)item);
             else if (item is Armor) UseArmor((Armor)item);
             else if (item is Healing) UseHealing((Healing)item);
-            else
-                Notify_UseSubject?.Invoke(Name, item.Name, true);
+            else Notify_UseSubject_Invoke(Name, item.Name, true);
         }
         internal void Resurrect()
         {
             if (!Alive)
             {
                 ResurrectBase();
-                Notify_Resurrect?.Invoke(Name, MaxResurrect);
+                Notify_Resurrect_Invoke(Name, MaxResurrect);
             }
         }
         #endregion Actions
-
-
-        private void Heals(float heals)
-        {
-            if (!Alive) return;
-            health.Heals(heals);
-        }
-        private void TakeDamage(Weapon weapon, PartBody[] siteOfInjury)
-        {
-            if (!Alive) return;
-            var damage = health.TakeDamage(weapon, thisArmor, siteOfInjury);
-            Notify_GetDamage?.Invoke(Name, siteOfInjury, weapon.Name, damage, Health.CurrentValue);
-            if (Health.CurrentValue == 0)
-            {
-                Notify_Death?.Invoke(Name);
-                Die();
-            }
-        }
-
-        #region UsingItems
-        private void UseHealing(Healing healing)
-        {
-            Heals(healing.HealingAmount);
-        }
-        private void UseWeapon(Weapon weapon)
-        {
-            ThisWeapon = weapon;
-            Notify_UseWeapon?.Invoke(Name, weapon.Name);
-        }
-        private void UseArmor(Armor armor)
-        {
-            switch (armor.PartOfBody)
-            {
-                case PartBody.Head:
-                    thisArmor.ThisHelmet = (Helmet)armor;
-                    break;
-                case PartBody.Breast:
-                    thisArmor.ThisBreastplate = (Breastplate)armor;
-                    break;
-                case PartBody.Legs:
-                    thisArmor.ThisLeggings = (Leggings)armor;
-                    break;
-                case PartBody.Feet:
-                    thisArmor.ThisBoots = (Boots)armor;
-                    break;
-                case PartBody.Hands:
-                    thisArmor.ThisBracers = (Bracers)armor;
-                    break;
-            }
-            Notify_UseArmor?.Invoke(Name, armor.Name, armor.PartOfBody);
-        }
-        #endregion UsingItems
     }
     #region Races
     class Human : RacesItem
