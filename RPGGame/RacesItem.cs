@@ -16,7 +16,6 @@ namespace RPGGame
     public interface IRacesItem
     {
         void Move();
-        void Heals(float heals);
         //void TakeDamage(float damage);
         void Hit(RacesItem person, PartBody siteOfInjury);
         void Hit(RacesItem person, PartBody[] siteOfInjury);
@@ -197,7 +196,7 @@ namespace RPGGame
             void T(float weapon_, float armor_, float x)
             {
                 var temp = weapon_ - armor_;
-                temp *= x;
+                temp = (float)Math.Round((double)temp * x, 1);
                 if (temp > 0)
                     summ += temp;
             }
@@ -411,22 +410,6 @@ namespace RPGGame
             if (!Alive) return;
             Console.WriteLine($"Идет (скорость: {speed.CurrentValue})");
         }
-        public void Heals(float heals)
-        {
-            if (!Alive) return;
-            health.Heals(heals);
-        }
-        private void TakeDamage(Weapon weapon, PartBody[] siteOfInjury)
-        {
-            if (!Alive) return;
-            var damage = health.TakeDamage(ThisWeapon, thisArmor, siteOfInjury);
-            Notify_GetDamage?.Invoke(Name, siteOfInjury, weapon.Name, damage, Health.CurrentValue);
-            if (Health.CurrentValue == 0)
-            {
-                Notify_Death?.Invoke(Name);
-                Die();
-            }
-        }
         public void Hit(RacesItem person, PartBody siteOfInjury)
         {
             if (!Alive) return;
@@ -460,6 +443,7 @@ namespace RPGGame
             Apply_Effects(item.Effects_);
             if (item is Weapon) UseWeapon((Weapon)item);
             else if (item is Armor) UseArmor((Armor)item);
+            else if (item is Healing) UseHealing((Healing)item);
             else
                 Notify_UseSubject?.Invoke(Name, item.Name, true);
         }
@@ -472,6 +456,30 @@ namespace RPGGame
             }
         }
         #endregion Actions
+
+
+        private void Heals(float heals)
+        {
+            if (!Alive) return;
+            health.Heals(heals);
+        }
+        private void TakeDamage(Weapon weapon, PartBody[] siteOfInjury)
+        {
+            if (!Alive) return;
+            var damage = health.TakeDamage(weapon, thisArmor, siteOfInjury);
+            Notify_GetDamage?.Invoke(Name, siteOfInjury, weapon.Name, damage, Health.CurrentValue);
+            if (Health.CurrentValue == 0)
+            {
+                Notify_Death?.Invoke(Name);
+                Die();
+            }
+        }
+
+        #region UsingItems
+        private void UseHealing(Healing healing)
+        {
+            Heals(healing.HealingAmount);
+        }
         private void UseWeapon(Weapon weapon)
         {
             ThisWeapon = weapon;
@@ -499,6 +507,7 @@ namespace RPGGame
             }
             Notify_UseArmor?.Invoke(Name, armor.Name, armor.PartOfBody);
         }
+        #endregion UsingItems
     }
     #region Races
     class Human : RacesItem
