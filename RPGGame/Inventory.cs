@@ -17,6 +17,7 @@ namespace RPGGame
         {
             bool res = items.Count + item.Size <= Size;
             if (res) items.Add(item);
+            items.Sort();
             return res;
         }
         public void Remove(int itemIndex)
@@ -26,7 +27,20 @@ namespace RPGGame
         public string[] GetArrName()
         {
             List<string> arr = new List<string>();
-            foreach (var item in Items) arr.Add($"[{item.Size}]\t{item.Name}");
+            int iter = 0;
+            Item oldItems = Items[0];
+            foreach (var item in Items)
+            {
+                if (oldItems.Name == item.Name)
+                    iter++;
+                else
+                {
+                    arr.Add($"{iter}x [{oldItems.Size}]\t{oldItems.Name}");
+                    iter = 1;
+                }
+                oldItems = item;
+            }
+            arr.Add($"{iter}x [{oldItems.Size}]\t{oldItems.Name}");
             return arr.ToArray();
         }
     }

@@ -13,7 +13,7 @@ namespace RPGGame
         float Size { get; }
         //Test
     }
-    public class Item : I_Item
+    public class Item : I_Item, IComparable
     {
         public string Name { get; private protected set; }
         public float Size { get; private protected set; }
@@ -26,6 +26,11 @@ namespace RPGGame
             Name = name;
             Size = size;
             Effects_ = effects;
+        }
+
+        public int CompareTo(object obj)
+        {
+            return string.Compare(((Item)obj).Name, Name);
         }
     }
     public class PowerPendant : Item
