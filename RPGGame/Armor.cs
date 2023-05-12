@@ -95,6 +95,9 @@ namespace RPGGame
     /// </summary>
     class Helmet : Armor
     {
+        /// <summary>
+        /// Шлем
+        /// </summary>
         public Helmet() : base(PartBody.Head, "Шлем", new Harm(1, 1, 1), new Effects(-1, -1, 0), 1) { }
     }
 
@@ -103,6 +106,9 @@ namespace RPGGame
     /// </summary>
     class Breastplate : Armor
     {
+        /// <summary>
+        /// Нагрудник
+        /// </summary>
         public Breastplate() : base(PartBody.Breast, "Нагрудник", new Harm(1, 1, 1), new Effects(-1, -1, 0), 1) { }
     }
 
@@ -111,6 +117,9 @@ namespace RPGGame
     /// </summary>
     class Leggings : Armor
     {
+        /// <summary>
+        /// Поножи
+        /// </summary>
         public Leggings() : base(PartBody.Legs, "Поножи", new Harm(1, 1, 1), new Effects(-1, -1, 0), 1) { }
     }
 
@@ -119,6 +128,9 @@ namespace RPGGame
     /// </summary>
     class Boots : Armor
     {
+        /// <summary>
+        /// Ботинки
+        /// </summary>
         public Boots() : base(PartBody.Feet, "Ботинки", new Harm(1, 1, 1), new Effects(-1, -1, 0), 1) { }
     }
     /// <summary>
@@ -126,6 +138,9 @@ namespace RPGGame
     /// </summary>
     class Bracers : Armor
     {
+        /// <summary>
+        /// Наручни
+        /// </summary>
         public Bracers() : base(PartBody.Hands, "Наручни", new Harm(1, 1, 1), new Effects(-1, -1, 0), 1) { }
     }
     #endregion Armor

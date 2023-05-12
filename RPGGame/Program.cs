@@ -16,21 +16,35 @@ namespace RPGGame
             HangEvents(human);
             HangEvents(okr);
 
-            human.GetItem(new Helmet());        //0
-            human.GetItem(new Leggings());      //1
-            human.GetItem(new Bracers());       //2
-            human.GetItem(new Breastplate());   //3
-            human.GetItem(new Bow());           //4
-            human.GetItem(new PowerPendant());  //5
-            human.GetItem(new PowerPendant());  //6
-            human.GetItem(new PowerPendant());  //7
-            human.GetItem(new Boots());         //8
+            human.GetItem(new Helmet());          //0
+            human.GetItem(new Leggings());        //1
+            human.GetItem(new Bracers());         //2
+            human.GetItem(new Breastplate());     //3
+            human.GetItem(new SwordOneHanded());  //4
+            human.GetItem(new Bow());             //5
+            human.GetItem(new PowerPendant());    //6
+            human.GetItem(new RingOfSpeed());     //7
+            human.GetItem(new MantleOfStealth()); //8
+            human.GetItem(new Boots());           //9
 
-            human.UseItem(1);
+
             human.UseItem(5);
+            human.UseItem(7);
+            human.UseItem(8);
+
+
+            human.UseItem(0);
+            human.UseItem(1);
+            human.UseItem(2);
+            human.UseItem(3);
+            human.UseItem(4);
+
+
             ShowArmor(human);
             ShowInventory(human);
             ShowWeapon(human);
+
+            ParameterOutputRacesItem(human);
 
 
             human.Hit(okr, PartBody.Head);
@@ -76,6 +90,15 @@ namespace RPGGame
             undead.Resurrect();
             undead.Hit(human, PartBody.Helmet);
             */
+        }
+
+        private static void ParameterOutputRacesItem(RacesItem racesItem)
+        {
+            Console.WriteLine($"Характеристики персонажа <{racesItem.Name}>:");
+            Console.WriteLine($"Здоровье - {racesItem.Health.CurrentValue}");
+            Console.WriteLine($"Скорость - {racesItem.Speed.CurrentValue}");
+            Console.WriteLine($"Сила - {racesItem.Force.CurrentValue}");
+            Console.WriteLine("__________________________________________________");
         }
 
         private static void HangEvents(RacesItem racesItem)

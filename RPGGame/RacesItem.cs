@@ -306,9 +306,14 @@ namespace RPGGame
         private protected bool CheckAvailability_Effects(Effects requirement)
         {
             return
+            stealth.CurrentValue + requirement.Stealth > 0 &&
+            speed.CurrentValue + requirement.Speed > 0 &&
+            force.CurrentValue + requirement.Force > 0;
+            /*
+            return
             stealth.CurrentValue > Math.Abs(requirement.Stealth) &&
             speed.CurrentValue > Math.Abs(requirement.Speed) &&
-            force.CurrentValue > Math.Abs(requirement.Force);
+            force.CurrentValue > Math.Abs(requirement.Force);*/
         }
         /*
          
@@ -458,10 +463,17 @@ namespace RPGGame
             else
                 Notify_UseSubject?.Invoke(Name, item.Name, true);
         }
+        internal void Resurrect()
+        {
+            if (!Alive)
+            {
+                ResurrectBase();
+                Notify_Resurrect?.Invoke(Name, MaxResurrect);
+            }
+        }
         #endregion Actions
         private void UseWeapon(Weapon weapon)
         {
-            Apply_Effects(weapon.Effects_);
             ThisWeapon = weapon;
             Notify_UseWeapon?.Invoke(Name, weapon.Name);
         }
@@ -486,14 +498,6 @@ namespace RPGGame
                     break;
             }
             Notify_UseArmor?.Invoke(Name, armor.Name, armor.PartOfBody);
-        }
-        internal void Resurrect()
-        {
-            if (!Alive)
-            {
-                ResurrectBase();
-                Notify_Resurrect?.Invoke(Name, MaxResurrect);
-            }
         }
     }
     #region Races

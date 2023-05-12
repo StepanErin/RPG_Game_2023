@@ -27,20 +27,21 @@ namespace RPGGame
         public string[] GetArrName()
         {
             List<string> arr = new List<string>();
+            int i = 0;
             int iter = 0;
             Item oldItems = Items[0];
             foreach (var item in Items)
             {
                 if (oldItems.Name == item.Name)
-                    iter++;
+                { iter++; i++; }
                 else
                 {
-                    arr.Add($"{iter}x [{oldItems.Size}]\t{oldItems.Name}");
+                    arr.Add($"{i++})\t{iter}x [{oldItems.Size}]\t{oldItems.Name}");
                     iter = 1;
                 }
                 oldItems = item;
             }
-            arr.Add($"{iter}x [{oldItems.Size}]\t{oldItems.Name}");
+            arr.Add($"{i++})\t{iter}x [{oldItems.Size}]\t{oldItems.Name}");
             return arr.ToArray();
         }
     }

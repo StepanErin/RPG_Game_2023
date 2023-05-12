@@ -35,10 +35,23 @@ namespace RPGGame
     }
     public class PowerPendant : Item
     {
+        /// <summary>
+        /// Кулон силы
+        /// </summary>
         public PowerPendant() : base("Кулон силы", 1, new Effects(0, 0, 3)) { }
     }
     public class MantleOfStealth : Item
     {
+        /// <summary>
+        /// Мантия скрытности
+        /// </summary>
         public MantleOfStealth() : base("Мантия скрытности", 1, new Effects(0, 3, 0)) { }
+    }
+    public class RingOfSpeed : Item
+    {
+        /// <summary>
+        /// Кольцо скорости
+        /// </summary>
+        public RingOfSpeed() : base("Кольцо скорости", 1, new Effects(3, 0, 0)) { }
     }
 }

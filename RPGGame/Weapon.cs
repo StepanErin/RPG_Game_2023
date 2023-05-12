@@ -74,6 +74,9 @@ namespace RPGGame
     /// </summary>
     internal class SwordOneHanded : Weapon
     {
+        /// <summary>
+        /// Меч одноручный	
+        /// </summary>
         public SwordOneHanded() : base("Меч одноручный", 0, new Harm(4, 3, 0), new Effects(-1, -1, -1), 1) { }
     }
     /// <summary>
@@ -81,6 +84,9 @@ namespace RPGGame
     /// </summary>
     internal class TwoHandedSword : Weapon
     {
+        /// <summary>
+        /// Меч двуручный	
+        /// </summary>
         public TwoHandedSword() : base("Меч двуручный", 0, new Harm(8, 4, 0), new Effects(-1, -1, -1), 1) { }
     }
     /// <summary>
@@ -88,6 +94,9 @@ namespace RPGGame
     /// </summary>
     internal class OneHandedSpear : Weapon
     {
+        /// <summary>
+        /// Копье одноручное	
+        /// </summary>
         public OneHandedSpear() : base("Копье одноручное", 0, new Harm(0, 0, 0), new Effects(-1, -1, -1), 1) { }
     }
     /// <summary>
@@ -95,6 +104,9 @@ namespace RPGGame
     /// </summary>
     internal class TwoHandedSpear : Weapon
     {
+        /// <summary>
+        /// Копье двуручное	
+        /// </summary>
         public TwoHandedSpear() : base("Копье двуручное", 0, new Harm(0, 6, 0), new Effects(-1, -1, -1), 1) { }
     }
     /// <summary>
@@ -102,6 +114,9 @@ namespace RPGGame
     /// </summary>
     internal class Mace : Weapon
     {
+        /// <summary>
+        /// Булава	
+        /// </summary>
         public Mace() : base("Булава", 0, new Harm(0, 0, 2), new Effects(-1, -1, -1), 1) { }
     }
     /// <summary>
@@ -109,6 +124,9 @@ namespace RPGGame
     /// </summary>
     internal class Hammer : Weapon
     {
+        /// <summary>
+        /// Молот	
+        /// </summary>
         public Hammer() : base("Молот", 0, new Harm(0, 0, 5), new Effects(-1, -1, -1), 1) { }
     }
     /// <summary>
@@ -116,6 +134,9 @@ namespace RPGGame
     /// </summary>
     internal class Bow : Weapon
     {
+        /// <summary>
+        /// Лук	
+        /// </summary>
         public Bow() : base("Лук", 5, new Harm(0, 3, 0), new Effects(-1, -1, -1), 1) { }
     }
     /// <summary>
@@ -123,6 +144,9 @@ namespace RPGGame
     /// </summary>
     internal class Crossbow : Weapon
     {
+        /// <summary>
+        /// Арбалет	
+        /// </summary>
         public Crossbow() : base("Арбалет", 0, new Harm(0, 6, 0), new Effects(-1, -1, -1), 1) { }
     }
     /// <summary>
@@ -130,10 +154,19 @@ namespace RPGGame
     /// </summary>
     internal class ThrowingAx : Weapon
     {
+        /// <summary>
+        /// Метательный топор	
+        /// </summary>
         public ThrowingAx() : base("Метательный топор", 0, new Harm(0, 5, 0), new Effects(-1, -1, -1), 1) { }
     }
+    /// <summary>
+    /// Рука
+    /// </summary>
     internal class Hand : Weapon
     {
+        /// <summary>
+        /// Рука
+        /// </summary>
         public Hand() : base("Рука", 0, new Harm(0, 0, 1), new Effects(-1, -1, -1), 1) { }
     }
     #endregion Weapons
